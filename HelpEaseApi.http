@@ -1,0 +1,6 @@
+@HelpEaseApi_HostAddress = http://localhost:5073
+
+GET {{HelpEaseApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
