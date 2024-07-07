@@ -1,5 +1,6 @@
 using System.Text;
 using HelpEaseApi.Contexts;
+using HelpEaseApi.Middlewares;
 using HelpEaseApi.Models;
 using HelpEaseApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -56,15 +67,18 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<DecryptRequestBody>();
 app.MapControllers();
 
 app.Run();
