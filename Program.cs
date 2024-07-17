@@ -78,7 +78,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<DecryptRequestBody>();
+// app.UseMiddleware<DecryptRequestBody>();
 app.MapControllers();
 
 app.Run();
